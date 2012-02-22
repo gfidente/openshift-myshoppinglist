@@ -1,4 +1,6 @@
-h2. My Shopping List
+h1. My Shopping List
+
+h2. Introduction
 
 This is a demo app for mobiles written using "Flask":http://flask.pocoo.org/ and "jQuery Mobile":http://jquerymobile.com. The backend storage is "MongoDB":http://www.mongodb.org.
 
@@ -6,48 +8,37 @@ The app allows you to check and edit some shopping lists from your mobile phone!
 
 It has been deployed on "OpenShift":http://openshift.redhat.com which offers MongoDB instances for free, as well as support for any Python WSGI app. Flask is installed using virtualenv.
 
-h3. Deployment notes
+h2. Deployment
 
-You can fork and publish the app on OpenShift with few easy steps. Fork the repo first, then:
+You can fork and publish the app on OpenShift with few easy steps. Fork the repo first, this should give you access on a copy of the repo at your account:
 
-pre. $ git clone git@github.com:username/openshift-myshoppinglist.git
+pre. https://github.com/$USERNAME/openshift-myshoppinglist.git
 
-Create the application on OpenShift and look at the git details:
+Now create the application on OpenShift:
 
-pre. $ rhc-create-app -a shoppinglist -n -t python-2.6 -l $USERNAME
+pre. $ rhc-create-app -a myshoppinglist -n -t python-2.6
 
 add the mongodb cartridge:
 
-pre. $ rhc-ctl-app -l $USERNAME -a myshoppinglist -e add-mongodb-2.0
+pre. $ rhc-ctl-app -a myshoppinglist -e add-mongodb-2.0
 
-check the remote git repo url:
+add the remote github repo to the existing one with a command like:
 
-pre. $ rhc-domain-show -l $USERNAME
+pre. $ cd myshoppinglist
+ $ git remote add upstream https://github.com/$USERNAME/openshift-myshoppinglist.git
 
-look for something like this:
+and then pull in your local repo the changes:
 
-pre. myshoppinglist
-    Framework: python-2.6
-     Creation: 2012-02-22T01:56:07-05:00
-         UUID: c23047569631453e9c817350f745325e
-      Git URL: ssh://c23047569631453e9c817350f745325e@myshoppinglist-blablabla.rhcloud.com/~/git/myshoppinglist.git/
-   Public URL: http://myshoppinglist-blablabla.rhcloud.com/
+pre. $ git pull -X theirs upstream master
+$ git push
 
-add the remote git repo to the existing ones with a command like:
-
-pre. $ git remote add openshift ssh://c23047569631453e9c817350f745325e@myshoppinglist-blablabla.rhcloud.com/~/git/myshoppinglist.git/
-
-and then push the changes
-
-pre. $ git push openshift
-
-that's all! your database connectivity is guaranteed by the following environment variables defined on the OpenShift servers:
+that's it! the database connectivity is guaranteed by the following environment variables, defined on the OpenShift servers:
 
 pre. dbhost = os.environ['OPENSHIFT_NOSQL_DB_HOST']
 dbport = int(os.environ['OPENSHIFT_NOSQL_DB_PORT'])
 dbuser = os.environ['OPENSHIFT_NOSQL_DB_USERNAME']
 dbpass = os.environ['OPENSHIFT_NOSQL_DB_PASSWORD']
 
-if you choose the give the app a different name, don't forget to reflect the changes in the 'application' file where, by default, the database opened is called 'myshoppinglist'.
+if you choose to give the app a different name, don't forget to reflect the changes in the 'application' file where, by default, the database opened is called 'myshoppinglist'.
 
 Enjoy!
