@@ -6,4 +6,50 @@ The app allows you to check and edit some shopping lists from your mobile phone!
 
 It has been deployed on "OpenShift":http://openshift.redhat.com which offers MongoDB instances for free, as well as support for any Python WSGI app. Flask is installed using virtualenv.
 
+h3. Deployment notes
+
+You can fork and publish the app on OpenShift with few easy steps. Fork the repo first, then:
+
+pre. $ git clone git@github.com:username/openshift-myshoppinglist.git
+
+Create the application on OpenShift and look at the git details:
+
+pre. $ rhc-create-app -a shoppinglist -n -t python-2.6 -l $USERNAME
+
+add the mongodb cartridge:
+
+pre. $ rhc-ctl-app -l $USERNAME -a myshoppinglist -e add-mongodb-2.0
+
+check the remote git repo url:
+
+pre. $ rhc-domain-show -l $USERNAME
+
+look for something like this:
+
+pre. myshoppinglist
+pre.    Framework: python-2.6
+pre.     Creation: 2012-02-22T01:56:07-05:00
+pre.         UUID: c23047569631453e9c817350f745325e
+pre.      Git URL: ssh://c23047569631453e9c817350f745325e@myshoppinglist-blablabla.rhcloud.com/~/git/myshoppinglist.git/
+pre.   Public URL: http://myshoppinglist-blablabla.rhcloud.com/
+
+add the remote git repo to the existing ones with a command like:
+
+pre. $ git remote add openshift ssh://c23047569631453e9c817350f745325e@myshoppinglist-blablabla.rhcloud.com/~/git/myshoppinglist.git/
+
+and then push the changes
+
+pre. $ git push openshift
+
+that's all! your database connectivity is guaranteed by the following environment variables defined on the OpenShift servers:
+
+@
+dbhost = os.environ['OPENSHIFT_NOSQL_DB_HOST']
+dbport = int(os.environ['OPENSHIFT_NOSQL_DB_PORT'])
+dbuser = os.environ['OPENSHIFT_NOSQL_DB_USERNAME']
+dbpass = os.environ['OPENSHIFT_NOSQL_DB_PASSWORD']
+@
+
+if you choose the give the app a different name, don't forget to reflect the changes in the 'application' file where, by default, the database opened is called 'myshoppinglist'.
+
 Enjoy!
