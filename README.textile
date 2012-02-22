@@ -1,7 +1,5 @@
 h1. My Shopping List
 
-h2. Introduction
-
 This is a demo app for mobiles written using "Flask":http://flask.pocoo.org/ and "jQuery Mobile":http://jquerymobile.com. The backend storage is "MongoDB":http://www.mongodb.org.
 
 The app allows you to check and edit some shopping lists from your mobile phone! So if your fellow file it from home, you'll have it at your fingers later, when at the mall!
@@ -25,7 +23,7 @@ pre. $ rhc-ctl-app -a myshoppinglist -e add-mongodb-2.0
 add the remote github repo to the existing one with a command like:
 
 pre. $ cd myshoppinglist
- $ git remote add upstream https://github.com/$USERNAME/openshift-myshoppinglist.git
+$ git remote add upstream https://github.com/$USERNAME/openshift-myshoppinglist.git
 
 and then pull in your local repo the changes:
 
