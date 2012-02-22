@@ -1,0 +1,9 @@
+h2. My Shopping List
+
+This is a demo app written using "flask":http://flask.pocoo.org/ and "jQuery Mobile":http://jquerymobile.com , stores data in a "MongoDB":http://www.mongodb.org database.
+
+The app allows you to save some shopping list to be used from your mobile phone when at the mall! :)
+
+The app is conveniently hosted on "OpenShift":http://openshift.redhat.com , which offers MongoDB instances for free, as well as support for any Python WSGI app. Flask is not installed globally, but we have it installed in virtenv.
+
+Enjoy!

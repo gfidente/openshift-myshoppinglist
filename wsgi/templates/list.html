@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block header %}
+ <a href="/" data-icon="home">Home</a>
+ <h1>Editing "{{ listid }}"</h1>
+ <a href="/delete/{{ listid }}" data-icon="minus">Delete</a>
+{% endblock %}
+
+{% block content %}
+ <p>To share this list pass on the following link <a href="/view/{{ listid }}">{{ request.url_root }}view/{{ listid }}</a> or give friends the listid: <strong>{{ listid }}</strong></p>
+ <form id="updateform" action="#" method="post">
+  <div data-role="fieldcontain" class="ui-hide-label">
+   <label for="listitem">Add:</label>
+   <input type="text" name="listitem" value="" placeholder="Add an item here" />
+  </div>
+ </form>
+ <form id="cleanform" action="/clean/{{ listid }}" method="post" data-ajax="false">
+  <div data-role="fieldcontain">
+   <fieldset data-role="controlgroup">
+    {% if entries %}
+     {% for entry in entries %}
+      <input type="checkbox" name="{{ entry }}" id="{{ entry }}" data-theme="c" />
+      <label for="{{ entry }}">{{ entry }}</label>
+     {% endfor %}
+    {% endif %}
+   </fieldset>
+  </div>
+ </form>
+{% endblock %}
+
+{% block footer %}
+ <div data-role="navbar">
+  <ul>
+   <li><a href="javascript:clean();" data-icon="check">Cleanup</a></li>
+  </ul>
+ </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+ <div class="ui-grid-a">
+  <div class="ui-block-a">
+   <span style="text-align: left;"><h4>You are going to the mall, but forgot the shopping list!</h4></span>
+  </div>
+  <div class="ui-block-b">
+    <span style="text-align: right;"><h4>You can't keep track of the stuff already in the basket?</h4></span>
+  </div>
+ </div>
+ <p>We thought a simple list, editable by you or your fellow at home, available later on the mobile (when at the mall), could have saved some headaches. So this is our attempt to solve the problem. <strong>Portable lists</strong>.</p>
+{% endblock %}
+
+{% block footer %}
+ <div data-role="navbar">
+  <ul>
+   <li><a href="/create" data-ajax="false" data-icon="plus">Create one</a></li>
+   <li><a href="/open" data-rel="dialog" data-icon="grid">Open exising</a></li>
+  </ul>
+ </div>
+{% endblock %}

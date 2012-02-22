@@ -1,0 +1,112 @@
+#!/usr/bin/python
+import os
+
+virtenv = os.environ['APPDIR'] + '/virtenv/'
+os.environ['PYTHON_EGG_CACHE'] = os.path.join(virtenv, 'lib/python2.6/site-packages')
+virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
+try:
+    execfile(virtualenv, dict(__file__=virtualenv))
+except IOError:
+    pass
+#
+# IMPORTANT: Put any additional includes below this line.  If placed above this
+# line, it's possible required libraries won't be in your searchable path
+# 
+
+from flask import Flask
+from flask import render_template, redirect, url_for, request, abort
+
+from random import sample
+from pymongo import Connection
+
+#import os
+import string
+
+dbhost = os.environ['OPENSHIFT_NOSQL_DB_HOST']
+dbport = int(os.environ['OPENSHIFT_NOSQL_DB_PORT'])
+dbuser = os.environ['OPENSHIFT_NOSQL_DB_USERNAME']
+dbpass = os.environ['OPENSHIFT_NOSQL_DB_PASSWORD']
+
+application = Flask(__name__)
+title = "My Shopping List"
+
+@application.route('/')
+def index():
+ return render_template('index.html', title=title, listid='Welcome')
+
+@application.route('/create')
+def create():
+ mongo = Connection(dbhost, dbport)
+ db = mongo.myshoppinglist
+ db.authenticate(dbuser, dbpass)
+ lists = db.lists
+ list = {}
+ listid = "".join(sample(string.lowercase + string.digits, 6))
+ list["listid"] = listid
+ mongo.end_request()
+ return redirect('/view/' + listid)
+
+@application.route('/delete/<listid>')
+def delete(listid):
+ mongo = Connection(dbhost, dbport)
+ db = mongo.myshoppinglist
+ db.authenticate(dbuser, dbpass)
+ lists = db.lists
+ lists.remove({"listid": listid})
+ mongo.end_request()
+ return redirect('/')
+
+@application.route('/open', methods=['POST', 'GET'])
+def open():
+ if request.method == 'POST':
+  listid = request.form['listid']
+  db = mongo.myshoppinglist
+  lists = db.lists
+  if lists.find({"listid": listid}).count() > 0:
+   return redirect('/view/' + listid)
+  else:
+   abort(404)
+ return render_template('open.html', title=title, listid='Open')
+
+@application.route('/view/<listid>', methods=['POST', 'GET'])
+def view(listid):
+ if request.method == 'POST':
+  listitem = request.form['listitem']
+  add_to_list(listid, listitem)
+ mongo = Connection(dbhost, dbport)
+ db = mongo.myshoppinglist
+ db.authenticate(dbuser, dbpass)
+ lists = db.lists
+ entry = lists.find_one({"listid": listid})
+ mongo.end_request()
+ entries = entry['text'] if entry else ''
+ return render_template('list.html', title=title, listid=listid, entries=entries)
+
+@application.route('/clean/<listid>', methods=['POST'])
+def clean(listid):
+ if request.method == 'POST':
+  remove_from_list(listid, request.form.keys())
+ return redirect('/view/' + listid)
+
+@application.errorhandler(404)
+def page_not_found(error):
+ return render_template('404.html', title=title, listid='Error'), 404
+
+def add_to_list(listid, listitem):
+ mongo = Connection(dbhost, dbport)
+ db = mongo.myshoppinglist
+ db.authenticate(dbuser, dbpass)
+ lists = db.lists
+ lists.update({"listid":listid}, {"$push": {"text":listitem}}, upsert=True) 
+ mongo.end_request()
+
+def remove_from_list(listid, listitems):
+ mongo = Connection(dbhost, dbport)
+ db = mongo.myshoppinglist
+ db.authenticate(dbuser, dbpass)
+ lists = db.lists
+ lists.update({"listid":listid}, {"$pullAll": {"text":listitems}}) 
+ mongo.end_request()
+
+if __name__ == '__main__':
+ application.run(debug=True)

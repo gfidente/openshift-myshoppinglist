@@ -1,0 +1,3 @@
+function clean(){
+ $("#cleanform").submit();
+}
