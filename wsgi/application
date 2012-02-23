@@ -5,9 +5,10 @@ virtenv = os.environ['APPDIR'] + '/virtenv/'
 os.environ['PYTHON_EGG_CACHE'] = os.path.join(virtenv, 'lib/python2.6/site-packages')
 virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
 try:
-    execfile(virtualenv, dict(__file__=virtualenv))
+ execfile(virtualenv, dict(__file__=virtualenv))
 except IOError:
-    pass
+ pass
+
 #
 # IMPORTANT: Put any additional includes below this line.  If placed above this
 # line, it's possible required libraries won't be in your searchable path
@@ -60,11 +61,15 @@ def delete(listid):
 def open():
  if request.method == 'POST':
   listid = request.form['listid']
+  mongo = Connection(dbhost, dbport)
   db = mongo.myshoppinglist
+  db.authenticate(dbuser, dbpass)
   lists = db.lists
   if lists.find({"listid": listid}).count() > 0:
+   mongo.end_request()
    return redirect('/view/' + listid)
   else:
+   mongo.end_request()
    abort(404)
  return render_template('open.html', title=title, listid='Open')
 
@@ -90,7 +95,7 @@ def clean(listid):
 
 @application.errorhandler(404)
 def page_not_found(error):
- return render_template('404.html', title=title, listid='Error'), 404
+ return render_template('404.html', title=title, error=error), 404
 
 def add_to_list(listid, listitem):
  mongo = Connection(dbhost, dbport)
@@ -109,4 +114,4 @@ def remove_from_list(listid, listitems):
  mongo.end_request()
 
 if __name__ == '__main__':
- application.run(debug=True)
+ application.run()
