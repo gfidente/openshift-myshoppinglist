@@ -8,22 +8,18 @@ It has been deployed on "OpenShift":http://openshift.redhat.com which offers Mon
 
 h2. Deployment
 
-You can fork and publish the app on OpenShift with few easy steps. Fork the repo first, this should give you access on a copy of the repo at your account:
+Create the application on OpenShift:
 
-pre. https://github.com/$USERNAME/openshift-myshoppinglist.git
-
-Now create the application on OpenShift:
-
-pre. $ rhc-create-app -a myshoppinglist -n -t python-2.6
+pre. $ rhc app create -a myshoppinglist -t python-2.6
 
 add the mongodb cartridge:
 
-pre. $ rhc-ctl-app -a myshoppinglist -e add-mongodb-2.0
+pre. $ rhc app cartridge add -a myshoppinglist -c mongodb-2.0
 
 add the remote github repo to the existing one with a command like:
 
 pre. $ cd myshoppinglist
-$ git remote add upstream https://github.com/$USERNAME/openshift-myshoppinglist.git
+$ git remote add upstream https://github.com/giulivo/openshift-myshoppinglist.git
 
 and then pull in your local repo the changes:
 
