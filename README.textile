@@ -19,7 +19,7 @@ pre. $ rhc app cartridge add -a myshoppinglist -c mongodb-2.0
 add the remote github repo to the existing one with a command like:
 
 pre. $ cd myshoppinglist
-$ git remote add upstream https://github.com/giulivo/openshift-myshoppinglist.git
+$ git remote add upstream git://github.com/giulivo/openshift-myshoppinglist.git
 
 and then pull in your local repo the changes:
 
