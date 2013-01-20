@@ -26,13 +26,12 @@ push to OpenShift:
 
 pre. $ git push
 
-and that's it! The database connectivity is managed via the following environment variables, which you will have predefined by the OpenShift servers at app creation:
+and that's it, go at http://myshoppinglist-$YOURDOMAIN.rhcloud.com and enjoy!
+
+Only if you decide to give your app a different name don't forget to reflect the changes in the `application` file where the database opened by default is name `myshoppinglist`.
+The database connectivity is managed via the following environment variables, which you will have predefined by the OpenShift servers at app creation:
 
 pre. dbhost = os.environ['OPENSHIFT_MONGODB_DB_HOST']
 dbport = int(os.environ['OPENSHIFT_MONGODB_DB_PORT'])
 dbuser = os.environ['OPENSHIFT_MONGODB_DB_USERNAME']
 dbpass = os.environ['OPENSHIFT_MONGODB_DB_PASSWORD']
-
-if you choose to give the app a different name, don't forget to reflect the changes in the 'application' file where, by default, the database opened is called 'myshoppinglist'.
-
-Enjoy!
