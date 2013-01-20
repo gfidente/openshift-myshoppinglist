@@ -23,10 +23,10 @@ from pymongo import Connection
 #import os
 import string
 
-dbhost = os.environ['OPENSHIFT_DB_HOST']
-dbport = int(os.environ['OPENSHIFT_DB_PORT'])
-dbuser = os.environ['OPENSHIFT_DB_USERNAME']
-dbpass = os.environ['OPENSHIFT_DB_PASSWORD']
+dbhost = os.environ['OPENSHIFT_MONGODB_DB_HOST']
+dbport = int(os.environ['OPENSHIFT_MONGODB_DB_PORT'])
+dbuser = os.environ['OPENSHIFT_MONGODB_DB_USERNAME']
+dbpass = os.environ['OPENSHIFT_MONGODB_DB_PASSWORD']
 
 application = Flask(__name__)
 title = "My Shopping List"
