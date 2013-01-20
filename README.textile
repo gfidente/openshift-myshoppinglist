@@ -1,12 +1,12 @@
-h1. My Shopping List
+h2. My Shopping List
 
 This is a demo app for mobiles written using "Flask":http://flask.pocoo.org/ and "jQuery Mobile":http://jquerymobile.com. The backend storage is "MongoDB":http://www.mongodb.org.
 
-The app allows you to check and edit some shopping lists from your mobile phone! So if your fellow file it from home, you'll have it at your fingers later, when at the mall!
+The app basically allows you to mark/add items to a list and share the list itself from your mobile phone and your pc! So if one day your fellow needs some stuff from the grocery he can just add the items to the list and you'll have it at your fingers later, when at the mall!
 
-It has been deployed on "OpenShift":http://openshift.redhat.com which offers MongoDB instances for free, as well as support for any Python WSGI app. Flask is installed using virtualenv.
+It has been deployed on "OpenShift":http://openshift.redhat.com which offers MongoDB instances for free, as well as support for any Python WSGI app. Flask and pymongo are installed at deployment time, loot at the `setup.py` file in the root.
 
-h2. Deployment
+h3. Deployment steps
 
 Create the application on OpenShift:
 
@@ -14,19 +14,19 @@ pre. $ rhc app create -a myshoppinglist -t python-2.6
 
 add the mongodb cartridge:
 
-pre. $ rhc app cartridge add -a myshoppinglist -c mongodb-2.0
+pre. $ rhc cartridge add -a myshoppinglist -c mongodb-2.2
 
-add the remote github repo to the existing one with a command like:
+add my github repo as a remote to your copy of the app, the pull and merge the diffs:
 
 pre. $ cd myshoppinglist
 $ git remote add upstream git://github.com/giulivo/openshift-myshoppinglist.git
+$ git pull -X theirs upstream master
 
-and then pull in your local repo the changes:
+push to OpenShift:
 
-pre. $ git pull -X theirs upstream master
-$ git push
+pre. $ git push
 
-that's it! the database connectivity is guaranteed by the following environment variables, defined on the OpenShift servers:
+and that's it! The database connectivity is managed via the following environment variables, which you will have predefined by the OpenShift servers at app creation:
 
 pre. dbhost = os.environ['OPENSHIFT_NOSQL_DB_HOST']
 dbport = int(os.environ['OPENSHIFT_NOSQL_DB_PORT'])
