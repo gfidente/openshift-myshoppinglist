@@ -28,10 +28,10 @@ pre. $ git push
 
 and that's it! The database connectivity is managed via the following environment variables, which you will have predefined by the OpenShift servers at app creation:
 
-pre. dbhost = os.environ['OPENSHIFT_NOSQL_DB_HOST']
-dbport = int(os.environ['OPENSHIFT_NOSQL_DB_PORT'])
-dbuser = os.environ['OPENSHIFT_NOSQL_DB_USERNAME']
-dbpass = os.environ['OPENSHIFT_NOSQL_DB_PASSWORD']
+pre. dbhost = os.environ['OPENSHIFT_DB_HOST']
+dbport = int(os.environ['OPENSHIFT_DB_PORT'])
+dbuser = os.environ['OPENSHIFT_DB_USERNAME']
+dbpass = os.environ['OPENSHIFT_DB_PASSWORD']
 
 if you choose to give the app a different name, don't forget to reflect the changes in the 'application' file where, by default, the database opened is called 'myshoppinglist'.
 
