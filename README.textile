@@ -4,7 +4,7 @@ This is a demo app for mobiles written using "Flask":http://flask.pocoo.org/ and
 
 The app basically allows you to mark/add items to a list and share the list itself from your mobile phone and your pc! So if one day your fellow needs some stuff from the grocery he can just add the items to the list and you'll have it at your fingers later, when at the mall!
 
-It has been deployed on "OpenShift":http://openshift.redhat.com which offers MongoDB instances for free, as well as support for any Python WSGI app. Flask and pymongo are installed at deployment time, loot at the `setup.py` file in the root.
+It has been deployed on "OpenShift":http://myshoppinglist-gfidente.rhcloud.com where Flask and pymongo are installed at deployment time, loot at the `setup.py` file in the root.
 
 h3. Deployment steps
 
