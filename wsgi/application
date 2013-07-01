@@ -4,7 +4,7 @@ import os
 virtenv = os.environ['APPDIR'] + '/virtenv/'
 os.environ['PYTHON_EGG_CACHE'] = os.path.join(virtenv, 'lib/python2.6/site-packages')
 virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
- execfile(virtualenv, dict(__file__=virtualenv))
+execfile(virtualenv, dict(__file__=virtualenv))
 
 #
 # IMPORTANT: Put any additional includes below this line.  If placed above this
